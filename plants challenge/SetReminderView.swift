@@ -10,12 +10,17 @@ import SwiftUI
 struct SetReminderView: View {
     @Environment(\.dismiss) var dismiss
     //dismiss the the xmark close the page
+    @State private var plantName = ""
     var body: some View {
         
         NavigationStack {
             Form {
-                Text("Plant name")
-            }
+                
+                HStack {
+                    Text("Plant Name")
+                    TextField("photos", text: $plantName)
+                }//HStack
+            }//form
             .navigationTitle("Set Reminder")
             .navigationBarTitleDisplayMode(.inline)
             
@@ -27,7 +32,7 @@ struct SetReminderView: View {
                         Image(systemName: "xmark")
                     }
                     
-                }
+                }//cancel
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
@@ -36,11 +41,12 @@ struct SetReminderView: View {
                     }
                 }//comfirm
             }// toolbar
-        }
-    }
-}
+        }//NavigationStack
+    }//body
+}// struct
 
 
 #Preview {
     SetReminderView()
+        .preferredColorScheme(.dark)
 }

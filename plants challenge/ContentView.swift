@@ -2,6 +2,7 @@ import SwiftUI
 import Playgrounds
 
 struct ContentView: View {
+    @State private var showSheet = false
     var body: some View {
         NavigationStack {
             VStack {
@@ -20,7 +21,8 @@ struct ContentView: View {
                     .padding(.horizontal,32)
                 
                 Button {
-                    //set reminder button
+                    showSheet = true
+                    //open the reminder page
                     
                 } label: {
                     Text("Set plant reminder")
@@ -45,6 +47,9 @@ struct ContentView: View {
             .navigationTitle("My Plants 🌱")
         }
 // NavigationStack close
+        .sheet(isPresented: $showSheet) {
+            SetReminderView()
+        }
        
     }
 // body close

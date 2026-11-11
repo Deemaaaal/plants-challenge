@@ -1,18 +1,13 @@
 import SwiftUI
+import SwiftData
 
-@main struct MyApp: App {
+@main
+struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            //in the app
             ContentView()
                 .preferredColorScheme(.dark)
         }
+        .modelContainer(for: Plant.self)
     }
 }
-//whole im writing
-#Preview {
-    ContentView()
-        .preferredColorScheme( .dark)
-}
-
-

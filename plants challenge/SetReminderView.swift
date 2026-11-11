@@ -1,9 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct SetReminderView: View {
 
     // أداة الإغلاق: عشان زر ❌ يسكّر الشاشة
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var context
 
     // صندوق يحفظ اسم النبتة اللي يكتبه المستخدم
     @State private var plantName = ""
@@ -97,9 +99,20 @@ struct SetReminderView: View {
                 // زر ✅
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        // بعدين: نحفظ النبتة
+                        
+                        let newPlant = Plant(
+                            name: plantName,
+                            room: room,
+                            light: light,
+                            wateringDays: wateringDays,
+                            water: water
+                        )
+                        context.insert(newPlant)
+                        dismiss()
+                        
                     } label: {
                         Image(systemName: "checkmark")
+
                     }
                 } // confirm
 
@@ -111,4 +124,5 @@ struct SetReminderView: View {
 #Preview {
     SetReminderView()
         .preferredColorScheme(.dark)
+        .modelContainer(for: Plant.self, inMemory: true)
 }

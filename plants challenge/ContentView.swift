@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
 
@@ -74,5 +75,7 @@ struct ContentView: View {
 // للكانفاس بس (أنتِ تشوفينه، المستخدم لا)
 #Preview {
     ContentView()
-        .preferredColorScheme(.dark) // الكانفاس دارك
+        .preferredColorScheme(.dark)
+        .modelContainer(for: Plant.self, inMemory: true)
+      
 }

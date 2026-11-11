@@ -8,8 +8,10 @@ struct ContentView: View {
     // false = مسكّرة بالبداية
     // @State = لما تتغير القيمة، SwiftUI يحدث الشاشة لحاله
     @State private var showSheet = false
+    @Query var plants: [Plant]
 
     var body: some View {
+        if plants.isEmpty {
 
         // يعطينا الشريط اللي فوق (مكان العنوان My Plants)
         NavigationStack {
@@ -61,6 +63,7 @@ struct ContentView: View {
 
             } // VStack close
             .navigationTitle("My Plants 🌱") // العنوان الكبير فوق
+            
 
         } // NavigationStack close
 
@@ -68,6 +71,9 @@ struct ContentView: View {
         // $ = مفتاح: يخلي الشيت يرجعها false لحاله لما يتسكر
         .sheet(isPresented: $showSheet) {
             SetReminderView()
+        }
+        } else {
+            PlantListView()
         }
 
     } // body close

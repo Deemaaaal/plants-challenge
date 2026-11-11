@@ -3,6 +3,11 @@ import SwiftData
 
 struct PlantListView: View {
     @Query var plants: [Plant]
+    @State private var showSheet = false
+    
+    var wateredCount: Int {
+        plants.filter { $0.isWatered }.count
+    }
     
     var progress: Double {
         if plants.isEmpty {
@@ -23,7 +28,9 @@ struct PlantListView: View {
                     .frame(height: 1)
 
                 // الجملة
-                Text("Your plants are waiting for a sip 💦")
+                Text(wateredCount == 0
+                     ? "Your plants are waiting for a sip 💦"
+                     : "\(wateredCount) of your plants feel loved today ✨")
                     .font(.system(size: 16))
                 
                 
@@ -76,8 +83,10 @@ struct PlantListView: View {
                                     .background(Color.gray.opacity(0.2))
                                     .clipShape(RoundedRectangle(cornerRadius: 6))
 
-                                Label(plant.water, systemImage: "drop")
-                                    .font(.system(size: 12))
+                                HStack(spacing: 4) {
+                                    Image(systemName: "drop")
+                                    Text(plant.water)
+                                }                                    .font(.system(size: 12))
                                     .foregroundStyle(.cyan)
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
@@ -94,7 +103,26 @@ struct PlantListView: View {
                 
             } // VStack
             .navigationTitle("My Plants 🌱")
+            
+            // plus icon
+            .overlay(alignment: .bottomTrailing) {
+                Button {
+                    showSheet = true
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.system(size: 22, weight: .semibold))
+                        .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.glassProminent)
+                .buttonBorderShape(.circle)
+                .tint(Color("AppGreen"))
+                .padding(24)
+            }
         } // NavigationStack
+        //sheet shows up
+        .sheet(isPresented: $showSheet) {
+            SetReminderView()
+        }
     }
 }
 

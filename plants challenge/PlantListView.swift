@@ -5,7 +5,10 @@ struct PlantListView: View {
     //context can edit
     @Environment(\.modelContext) var context
     @Query var plants: [Plant]
+    
     @State private var showSheet = false
+    
+    @State private var selectedPlant: Plant? = nil
     
     var wateredCount: Int {
         plants.filter { $0.isWatered }.count
@@ -125,6 +128,10 @@ struct PlantListView: View {
                                 .padding(.leading, 34)
                                 
                             } // row VStack
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                selectedPlant = plant
+                            }
                             
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
@@ -159,6 +166,9 @@ struct PlantListView: View {
         //sheet shows up
         .sheet(isPresented: $showSheet) {
             SetReminderView()
+        }
+        .sheet(item: $selectedPlant) { plant in
+            SetReminderView(plant: plant)
         }
     }
 }

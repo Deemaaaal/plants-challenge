@@ -6,6 +6,7 @@ struct SetReminderView: View {
     // أداة الإغلاق: عشان زر ❌ يسكّر الشاشة
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
+    var plant: Plant? = nil
 
     // صندوق يحفظ اسم النبتة اللي يكتبه المستخدم
     @State private var plantName = ""
@@ -78,10 +79,32 @@ struct SetReminderView: View {
                         Label("Water", systemImage: "drop")
                     } // water label
 
-                } // Section{
+                } // Section
+                
+                // زر الحذف: يطلع بس إذا كنا نعدل ✏️
+                if let plant {
+                    Section {
+                        Button("Delete Reminder", role: .destructive) {
+                            context.delete(plant)   // احذفي النبتة من المخزن 🗑️
+                            dismiss()               // سكّري الشاشة 🚪
+                        }
+                        .frame(maxWidth: .infinity) // الكلام في النص
+                    }
+                }
               
                 
             } // Form
+            
+            .onAppear {
+                if let plant {
+                    plantName = plant.name
+                    room = plant.room
+                    light = plant.light
+                    wateringDays = plant.wateringDays
+                    water = plant.water
+                }
+            }
+            
     // 👇 هذي على الـ Form، يعني داخل NavigationStack ✅
             .navigationTitle("Set Reminder")
             .navigationBarTitleDisplayMode(.inline)
@@ -100,14 +123,33 @@ struct SetReminderView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
                         
-                        let newPlant = Plant(
-                            name: plantName,
-                            room: room,
-                            light: light,
-                            wateringDays: wateringDays,
-                            water: water
-                        )
-                        context.insert(newPlant)
+                        // إذا الورقة فيها نبتة؟ (يعني المستخدم يعدّل ✏️)
+                        if let plant {
+
+                            // خذي اللي في الخانات، وحطيه في النبتة القديمة
+                            plant.name = plantName                // الاسم الجديد
+                            plant.room = room                     // الغرفة الجديدة
+                            plant.light = light                   // الإضاءة الجديدة
+                            plant.wateringDays = wateringDays     // أيام السقي الجديدة
+                            plant.water = water                   // كمية الماء الجديدة
+
+                        } else {
+                            // وإلا: الورقة فاضية (يعني المستخدم يضيف نبتة جديدة ➕)
+
+                            // سوي نبتة جديدة من اللي في الخانات
+                            let newPlant = Plant(
+                                name: plantName,
+                                room: room,
+                                light: light,
+                                wateringDays: wateringDays,
+                                water: water
+                            )
+
+                            // حطي النبتة الجديدة في المخزن 🗄️
+                            context.insert(newPlant)
+                        }
+
+                        // في الحالتين: سكّري الشاشة 🚪
                         dismiss()
                         
                     } label: {

@@ -7,6 +7,9 @@ struct MyApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.dark)
+                .onAppear {
+                    NotificationManager.requestPermission()
+                }
         }
         .modelContainer(for: Plant.self)
     }

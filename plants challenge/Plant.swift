@@ -9,6 +9,8 @@ class Plant {
     var wateringDays: String
     var water: String
     var isWatered: Bool = false
+        //like an ID for each plant
+    var notificationID: String = UUID().uuidString
 
     init(name: String, room: String, light: String, wateringDays: String, water: String) {
         self.name = name

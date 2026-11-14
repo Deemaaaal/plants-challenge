@@ -135,6 +135,7 @@ struct PlantListView: View {
                             
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
+                                    NotificationManager.cancel(for: plant)
                                     context.delete(plant)
                                 } label: {
                                     Image(systemName: "trash")

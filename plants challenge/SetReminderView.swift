@@ -85,6 +85,7 @@ struct SetReminderView: View {
                 if let plant {
                     Section {
                         Button("Delete Reminder", role: .destructive) {
+                            NotificationManager.cancel(for: plant)
                             context.delete(plant)   // احذفي النبتة من المخزن 🗑️
                             dismiss()               // سكّري الشاشة 🚪
                         }
@@ -120,23 +121,21 @@ struct SetReminderView: View {
                 } // cancel
 
                 // زر ✅
+                
+                
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        
-                        // إذا الورقة فيها نبتة؟ (يعني المستخدم يعدّل ✏️)
                         if let plant {
+                            plant.name = plantName
+                            plant.room = room
+                            plant.light = light
+                            plant.wateringDays = wateringDays
+                            plant.water = water
 
-                            // خذي اللي في الخانات، وحطيه في النبتة القديمة
-                            plant.name = plantName                // الاسم الجديد
-                            plant.room = room                     // الغرفة الجديدة
-                            plant.light = light                   // الإضاءة الجديدة
-                            plant.wateringDays = wateringDays     // أيام السقي الجديدة
-                            plant.water = water                   // كمية الماء الجديدة
+                            NotificationManager.cancel(for: plant)      // 🆕 الغي المنبّه القديم
+                            NotificationManager.schedule(for: plant)    // 🆕 حطي منبّه جديد
 
                         } else {
-                            // وإلا: الورقة فاضية (يعني المستخدم يضيف نبتة جديدة ➕)
-
-                            // سوي نبتة جديدة من اللي في الخانات
                             let newPlant = Plant(
                                 name: plantName,
                                 room: room,
@@ -144,13 +143,12 @@ struct SetReminderView: View {
                                 wateringDays: wateringDays,
                                 water: water
                             )
-
-                            // حطي النبتة الجديدة في المخزن 🗄️
                             context.insert(newPlant)
-                        }
 
-                        // في الحالتين: سكّري الشاشة 🚪
+                            NotificationManager.schedule(for: newPlant) // 🆕 حطي منبّه للنبتة الجديدة
+                        }
                         dismiss()
+                        
                         
                     } label: {
                         Image(systemName: "checkmark")

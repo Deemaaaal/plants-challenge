@@ -43,6 +43,7 @@ struct SetReminderView: View {
                         Text("Bathroom").tag("Bathroom")
                     } label: {
                         Label("Room", systemImage: "location")
+                            .foregroundStyle(.white)
                     } // room label
 
                     // الإضاءة
@@ -52,6 +53,7 @@ struct SetReminderView: View {
                         Text("Low Light").tag("Low Light")
                     } label: {
                         Label("Light", systemImage: "sun.max")
+                            .foregroundStyle(.white)
                     } // light label
 
                 } // Section
@@ -67,6 +69,7 @@ struct SetReminderView: View {
                         Text("Every 2 weeks").tag("Every 2 weeks")
                     } label: {
                         Label("Watering Days", systemImage: "drop")
+                            .foregroundStyle(.white)
                     } // watering label
 
                     // Water amount
@@ -77,6 +80,8 @@ struct SetReminderView: View {
                         Text("200-300 ml").tag("200-300 ml")
                     } label: {
                         Label("Water", systemImage: "drop")
+                            .foregroundStyle(.white)
+                        
                     } // water label
 
                 } // Section
@@ -155,6 +160,10 @@ struct SetReminderView: View {
                         Image(systemName: "checkmark")
 
                     }
+                    .buttonStyle(.glassProminent)
+                    .tint(Color("AppGreen"))
+                    .disabled(plantName.isEmpty)
+                    
                 } // confirm
 
             } // toolbar

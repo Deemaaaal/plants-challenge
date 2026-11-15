@@ -9,9 +9,11 @@ struct ContentView: View {
     // @State = لما تتغير القيمة، SwiftUI يحدث الشاشة لحاله
     @State private var showSheet = false
     @Query var plants: [Plant]
+    @AppStorage("hasSeenJourney") var hasSeenJourney = false
+    @State private var showJourney = !UserDefaults.standard.bool(forKey: "hasSeenJourney")
 
     var body: some View {
-        if plants.isEmpty {
+        if plants.isEmpty && showJourney {
 
         // يعطينا الشريط اللي فوق (مكان العنوان My Plants)
         NavigationStack {
@@ -71,6 +73,12 @@ struct ContentView: View {
         // $ = مفتاح: يخلي الشيت يرجعها false لحاله لما يتسكر
         .sheet(isPresented: $showSheet) {
             SetReminderView()
+        }
+        .onAppear {
+            hasSeenJourney = true
+        }
+        .onDisappear {
+            showJourney = false
         }
         } else {
             PlantListView()

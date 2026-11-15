@@ -8,7 +8,15 @@ class Plant {
     var light: String
     var wateringDays: String
     var water: String
-    var isWatered: Bool = false
+    var lastWatered: Date? = nil
+
+    var isWatered: Bool {
+        guard let lastWatered else { return false }
+        let days = NotificationManager.daysFrom(wateringDays)
+        let start = Calendar.current.startOfDay(for: lastWatered)
+        let nextTime = Calendar.current.date(byAdding: .day, value: days, to: start)!
+        return Date() < nextTime
+    }
         //like an ID for each plant
     var notificationID: String = UUID().uuidString
 

@@ -125,6 +125,7 @@ struct SetReminderView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
+                        print("✅ زر الحفظ انضغط")
                         if let plant {
                             plant.name = plantName
                             plant.room = room

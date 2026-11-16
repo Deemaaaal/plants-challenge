@@ -1,4 +1,4 @@
-#Planto 🌱
+# Planto 🌱
 
 A simple iOS app that reminds you to water your plants.
 

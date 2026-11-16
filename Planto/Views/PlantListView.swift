@@ -75,14 +75,27 @@ struct PlantListView: View {
                                     .buttonStyle(.plain)
 
                                     Text(plant.name)
-                                        .font(.system(size: 20))
+                                        .font(.system(size: 28))
                                 }
-
                                 HStack(spacing: 8) {
-                                    Label(plant.light, systemImage: "sun.max")
-                                        .foregroundStyle(.yellow)
-                                    Label(plant.water, systemImage: "drop")
-                                        .foregroundStyle(.cyan)
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "sun.max")
+                                        Text(plant.light)
+                                    }
+                                    .foregroundStyle(.yellow)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.white.opacity(0.1), in: .rect(cornerRadius: 8))
+
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "drop")
+                                        Text(plant.water)
+                                    }
+                                    .foregroundStyle(.cyan)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.white.opacity(0.1), in: .rect(cornerRadius: 8))
+                               
                                 }
                                 .font(.system(size: 12))
                                 .labelStyle(.titleAndIcon)

@@ -23,16 +23,16 @@ struct SetReminderView: View {
 
                 Section {
                     Picker(selection: $viewModel.room) {
-                        ForEach(["Bedroom", "Living Room", "Kitchen", "Balcony", "Bathroom"], id: \.self) {
-                            Text($0).tag($0)
+                        ForEach(Room.allCases, id: \.self) {          // 🏠 Enum
+                            Text($0.rawValue).tag($0.rawValue)
                         }
                     } label: {
                         Label("Room", systemImage: "location").foregroundStyle(.white)
                     }
 
                     Picker(selection: $viewModel.light) {
-                        ForEach(["Full Sun", "Partial Sun", "Low Light"], id: \.self) {
-                            Text($0).tag($0)
+                        ForEach(Light.allCases, id: \.self) {         // ☀️ Enum
+                            Text($0.rawValue).tag($0.rawValue)
                         }
                     } label: {
                         Label("Light", systemImage: "sun.max").foregroundStyle(.white)
@@ -41,16 +41,16 @@ struct SetReminderView: View {
 
                 Section {
                     Picker(selection: $viewModel.wateringDays) {
-                        ForEach(["Every day", "Every 2 days", "Every 3 days", "Once a week", "Every 10 days", "Every 2 weeks"], id: \.self) {
-                            Text($0).tag($0)
+                        ForEach(WateringDays.allCases, id: \.self) {  // 📅 Enum
+                            Text($0.rawValue).tag($0.rawValue)
                         }
                     } label: {
                         Label("Watering Days", systemImage: "drop").foregroundStyle(.white)
                     }
 
                     Picker(selection: $viewModel.water) {
-                        ForEach(["20-50 ml", "50-100 ml", "100-200 ml", "200-300 ml"], id: \.self) {
-                            Text($0).tag($0)
+                        ForEach(Water.allCases, id: \.self) {         // 💧 Enum
+                            Text($0.rawValue).tag($0.rawValue)
                         }
                     } label: {
                         Label("Water", systemImage: "drop").foregroundStyle(.white)

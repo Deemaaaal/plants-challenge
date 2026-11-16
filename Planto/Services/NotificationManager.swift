@@ -40,14 +40,7 @@ struct NotificationManager {
 
     // نحول "Every 2 days" لرقم 2 🔢
     static func daysFrom(_ text: String) -> Int {
-        switch text {
-        case "Every day":     return 1
-        case "Every 2 days":  return 2
-        case "Every 3 days":  return 3
-        case "Once a week":   return 7
-        case "Every 10 days": return 10
-        case "Every 2 weeks": return 14
-        default:              return 1
-        }
+        WateringDays(rawValue: text)?.days ?? 1
     }
-}
+    }
+

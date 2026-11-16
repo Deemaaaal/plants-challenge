@@ -19,7 +19,7 @@ struct PlantListView: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 1)
 
-                if plants.isEmpty && viewModel.justFinished {
+                if viewModel.allDone(plants) {
                     // 🎉 All Done
                     Spacer()
                     Image("plantDone")
@@ -66,7 +66,7 @@ struct PlantListView: View {
 
                                 HStack(spacing: 12) {
                                     Button {
-                                        viewModel.toggle(plant, plants: plants, context: context)
+                                        viewModel.toggle(plant)
                                     } label: {
                                         Image(systemName: plant.isWatered ? "checkmark.circle.fill" : "circle")
                                             .font(.system(size: 22))
@@ -131,11 +131,8 @@ struct PlantListView: View {
                 .padding(24)
             }
             .navigationTitle("My Plants 🌱")
-            .onChange(of: scenePhase) {
-                if scenePhase == .background {
-                    viewModel.justFinished = false
-                }
-            }
+            // 🔄 لما ترجع للتطبيق، الشاشة تتحدث (عشان ترجع النباتات اللي جا موعدها)
+            .onChange(of: scenePhase) { }
         }
         .sheet(isPresented: $showSheet) {
             SetReminderView()

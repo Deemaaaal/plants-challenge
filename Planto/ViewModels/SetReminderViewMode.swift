@@ -28,7 +28,7 @@ class SetReminderViewModel {
         }
     }
 
-    // زر ✅
+    // edit
     func save(context: ModelContext) {
         if let plant {
             plant.name = plantName

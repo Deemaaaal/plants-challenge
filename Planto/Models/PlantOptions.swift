@@ -15,7 +15,7 @@ enum Light: String, CaseIterable {
 }
 
 
-enum WateringDays: String, CaseIterable {
+enum WateringDays: String, CaseIterable{
     case everyDay = "Every day"
     case every2Days = "Every 2 days"
     case every3Days = "Every 3 days"

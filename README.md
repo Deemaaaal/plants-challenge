@@ -10,11 +10,11 @@ A simple iOS app that reminds you to water your plants.
 - Progress bar showing how many plants are watered today
 - Edit or delete plants
 
-  ## Screenshots
+## Screenshots
 <p>
-  <img src="pages/start.png" width="200">
-  <img src="pages/reminder.png" width="200">
-  <img src="pages/list.png" width="200">
-  <img src="pages/done.png" width="200">
-  <img src="pages/edit.png" width="200">
+  <img src="Screenshots/start.png" width="200">
+  <img src="Screenshots/reminder.png" width="200">
+  <img src="Screenshots/list.png" width="200">
+  <img src="Screenshots/done.png" width="200">
+  <img src="Screenshots/edit.png" width="200">
 </p>

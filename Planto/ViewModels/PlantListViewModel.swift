@@ -1,32 +1,49 @@
 import Foundation
-import SwiftData      
+import SwiftData
 import Observation
 
 @Observable
 class PlantListViewModel {
 
-    // 💧 كم نبتة مسقية؟
-    func wateredCount(_ plants: [Plant]) -> Int {
-        plants.filter { $0.isWatered }.count
+    // ✅ النباتات اللي سوى لها تشيك الحين (قبل لا يطلع من التطبيق)
+    var checkedNow: [Plant] = []
+
+    // 💧 النباتات اللي محتاجة سقي بس (المسقية تختفي)
+    func plantsToWater(_ plants: [Plant]) -> [Plant] {
+        plants.filter { !$0.isWatered }
     }
 
-    // 📊 كم يتعبى شريط التقدم؟ (من 0 إلى 1)
+    // 📊 الشريط: اللي سقاها الحين ÷ (اللي سقاها الحين + اللي باقية)
     func progress(_ plants: [Plant]) -> Double {
-        if plants.isEmpty { return 0 }
-        return Double(wateredCount(plants)) / Double(plants.count)
+        let total = plantsToWater(plants).count + checkedNow.count
+        if total == 0 { return 0 }
+        return Double(checkedNow.count) / Double(total)
     }
 
-    // 🎉 هل كل النباتات مسقية؟
+    // 🎉 خلص الكل الحين؟ (ما باقي شي + سقى شي الحين)
     func allDone(_ plants: [Plant]) -> Bool {
-        !plants.isEmpty && wateredCount(plants) == plants.count
+        plantsToWater(plants).isEmpty && !checkedNow.isEmpty
     }
 
-    // ⭕ لما يضغط الدائرة: حط التشيك أو شيله (بدون حذف)
+    // ⭕ لما يضغط الدائرة: نسقيها ونحسبها في الشريط
     func toggle(_ plant: Plant) {
-        plant.lastWatered = plant.isWatered ? nil : Date()
+        plant.lastWatered = Date()
+        checkedNow.append(plant)
     }
 
-    // 🗑️ نحذف النبتة وإشعارها (لما يسحب ويحذف بنفسه)
+    // 🔄 لما يطلع من التطبيق: نصفّر الشريط
+    func reset() {
+        checkedNow = []
+    }
+
+    // 🆕 لو خلص الكل وبيضيف نبتة جديدة: الشريط يبدأ من جديد
+    func newRound(_ plants: [Plant]) {
+        if plantsToWater(plants).isEmpty {
+            checkedNow = []
+        }
+    }
+
+    // 🗑️ نحذف النبتة وإشعارها
     func delete(_ plant: Plant, context: ModelContext) {
         NotificationManager.cancel(for: plant)
         context.delete(plant)

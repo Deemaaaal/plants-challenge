@@ -5,12 +5,12 @@ import SwiftData
 struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartJourneyView()
                 .preferredColorScheme(.dark)
                 .onAppear {
-                    NotificationManager.requestPermission()
+                    NotificationManager.requestPermission()// asking for permision
                 }
         }
-        .modelContainer(for: Plant.self)
+        .modelContainer(for: Plant.self)//where i saves the plants 
     }
 }

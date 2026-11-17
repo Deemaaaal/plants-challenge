@@ -4,7 +4,7 @@ import SwiftData
 struct PlantListView: View {
 
     @Environment(\.modelContext) var context
-    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.scenePhase) var scenePhase   // حالة التطبيق
     @Query var plants: [Plant]
 
     @State private var viewModel = PlantListViewModel()   // 🧠 الـ ViewModel
@@ -33,7 +33,7 @@ struct PlantListView: View {
                         .foregroundStyle(.gray)
                     Spacer()
 
-                } else if plants.isEmpty {
+                } else if viewModel.plantsToWater(plants).isEmpty {
                     // 📭 No reminders
                     Spacer()
                     Text("No reminders set yet..")
@@ -43,7 +43,7 @@ struct PlantListView: View {
 
                 } else {
                     // 📋 القائمة
-                    let count = viewModel.wateredCount(plants)
+                    let count = viewModel.checkedNow.count   // 👈 1: كم سقى الحين
                     Text(count == 0
                          ? "Your plants are waiting for a sip 💦"
                          : "\(count) of your plants feel loved today ✨")
@@ -54,7 +54,7 @@ struct PlantListView: View {
                         .padding(.horizontal, 32)
 
                     List {
-                        ForEach(plants) { plant in
+                        ForEach(viewModel.plantsToWater(plants)) { plant in
                             VStack(alignment: .leading, spacing: 6) {
 
                                 HStack(spacing: 4) {
@@ -77,6 +77,7 @@ struct PlantListView: View {
                                     Text(plant.name)
                                         .font(.system(size: 28))
                                 }
+
                                 HStack(spacing: 8) {
                                     HStack(spacing: 4) {
                                         Image(systemName: "sun.max")
@@ -95,10 +96,8 @@ struct PlantListView: View {
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
                                     .background(Color.white.opacity(0.1), in: .rect(cornerRadius: 8))
-                               
                                 }
                                 .font(.system(size: 12))
-                                .labelStyle(.titleAndIcon)
                                 .padding(.leading, 34)
                             }
                             .contentShape(Rectangle())
@@ -119,6 +118,7 @@ struct PlantListView: View {
             }
             .overlay(alignment: .bottomTrailing) {
                 Button {
+                    viewModel.newRound(plants)   // 👈 2: لو خلص الكل، الشريط يبدأ من جديد
                     showSheet = true
                 } label: {
                     Image(systemName: "plus")
@@ -131,8 +131,12 @@ struct PlantListView: View {
                 .padding(24)
             }
             .navigationTitle("My Plants 🌱")
-            // 🔄 لما ترجع للتطبيق، الشاشة تتحدث (عشان ترجع النباتات اللي جا موعدها)
-            .onChange(of: scenePhase) { }
+            // 🔄 لما يطلع من التطبيق: نصفّر الشريط، فلما يرجع تطلع No reminders
+            .onChange(of: scenePhase) {
+                if scenePhase == .background {
+                    viewModel.reset()   // 👈 3
+                }
+            }
         }
         .sheet(isPresented: $showSheet) {
             SetReminderView()

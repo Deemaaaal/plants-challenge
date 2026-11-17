@@ -20,7 +20,7 @@ struct NotificationManager {
 
         // متى؟ (كل كم يوم) 📅
         let days = daysFrom(plant.wateringDays)
-        let seconds = Double(days) * 24 * 60 * 60
+        let seconds =  Double(days) * 24 * 60 * 60
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: true)
 
         // نسلّمه للجوال 📲

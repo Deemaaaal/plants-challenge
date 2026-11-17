@@ -2,14 +2,12 @@ import SwiftUI
 import SwiftData
 
 
-struct ContentView: View {
+struct StartJourneyView: View {
 
-    // صندوق يتذكر: شاشة Set Reminder مفتوحة ولا لا؟
-    // false = مسكّرة بالبداية
-    // @State = لما تتغير القيمة، SwiftUI يحدث الشاشة لحاله
+    
     @State private var showSheet = false
     @Query var plants: [Plant]
-    @AppStorage("hasSeenJourney") var hasSeenJourney = false
+    @AppStorage("hasSeenJourney") var hasSeenJourney = false // check if the user has opened the app before
     @State private var showJourney = !UserDefaults.standard.bool(forKey: "hasSeenJourney")
 
     var body: some View {
@@ -89,7 +87,7 @@ struct ContentView: View {
 
 // للكانفاس بس (أنتِ تشوفينه، المستخدم لا)
 #Preview {
-    ContentView()
+    StartJourneyView()
         .preferredColorScheme(.dark)
         .modelContainer(for: Plant.self, inMemory: true)
       

@@ -1,4 +1,8 @@
-# Planto 🌱
+<p align="center">
+  <img src="Screenshots/icon.png" width="120">
+</p>
+<h1 align="center">Planto 🌱</h1>
+<p align="center">A simple iOS app that reminds you to water your plants.</p>
 
 A simple iOS app that reminds you to water your plants.
 

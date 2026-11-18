@@ -54,7 +54,7 @@ struct PlantListView: View {
                         .padding(.horizontal, 32)
 
                     List {
-                        ForEach(viewModel.plantsToWater(plants)) { plant in
+                        ForEach(viewModel.listPlants(plants)) { plant in
                             VStack(alignment: .leading, spacing: 6) {
 
                                 HStack(spacing: 4) {
@@ -100,6 +100,7 @@ struct PlantListView: View {
                                 .font(.system(size: 12))
                                 .padding(.leading, 34)
                             }
+                            .opacity(plant.isWatered ? 0.5 : 1)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 selectedPlant = plant

@@ -8,9 +8,15 @@ class PlantListViewModel {
     // ✅ النباتات اللي سوى لها تشيك الحين (قبل لا يطلع من التطبيق)
     var checkedNow: [Plant] = []
 
-    // 💧 النباتات اللي محتاجة سقي بس (المسقية تختفي)
+    // 💧 النباتات اللي محتاجة سقي
     func plantsToWater(_ plants: [Plant]) -> [Plant] {
         plants.filter { !$0.isWatered }
+    }
+
+    // 📋 اللي تطلع في القائمة: اللي محتاجة سقي فوق ⭕ + اللي سقاها الحين تحت ✅
+    func listPlants(_ plants: [Plant]) -> [Plant] {
+        let checked = checkedNow.filter { item in plants.contains { $0.id == item.id } }
+        return plantsToWater(plants) + checked
     }
 
     // 📊 الشريط: اللي سقاها الحين ÷ (اللي سقاها الحين + اللي باقية)
@@ -25,13 +31,18 @@ class PlantListViewModel {
         plantsToWater(plants).isEmpty && !checkedNow.isEmpty
     }
 
-    // ⭕ لما يضغط الدائرة: نسقيها ونحسبها في الشريط
+    // ⭕ لما يضغط الدائرة: يسقيها، أو يلغي السقي لو غلط
     func toggle(_ plant: Plant) {
-        plant.lastWatered = Date()
-        checkedNow.append(plant)
+        if plant.isWatered {
+            plant.lastWatered = nil                          // ↩️ ألغِ السقي
+            checkedNow.removeAll { $0.id == plant.id }
+        } else {
+            plant.lastWatered = Date()                       // ✅ سقيناها
+            checkedNow.append(plant)
+        }
     }
 
-    // 🔄 لما يطلع من التطبيق: نصفّر الشريط
+    // 🔄 لما يطلع من التطبيق: نصفّر
     func reset() {
         checkedNow = []
     }
@@ -46,6 +57,7 @@ class PlantListViewModel {
     // 🗑️ نحذف النبتة وإشعارها
     func delete(_ plant: Plant, context: ModelContext) {
         NotificationManager.cancel(for: plant)
+        checkedNow.removeAll { $0.id == plant.id }
         context.delete(plant)
     }
 }
